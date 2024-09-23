@@ -26,5 +26,7 @@ int main(){
     livro livro2;
     inserelivro(livro1);
     mostralivro(livro1);
+    inserelivro(livro2);
+    mostralivro(livro2);
     return 0;
 }
