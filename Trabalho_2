@@ -1,0 +1,121 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+struct Produto {
+    int ID;
+    string nome;
+    float preco;
+    int quantidade;
+};
+
+void adicionarProduto(Produto produtos[], int& quantidadeAtual) {
+    cout << "Escreve o nome do produto: ";
+    cin >> produtos[quantidadeAtual].nome;
+   
+    cout << "Escreve o preço do produto: ";
+    cin >> produtos[quantidadeAtual].preco;
+   
+    cout << "Escreve a quantidade do produto: ";
+    cin >> produtos[quantidadeAtual].quantidade;
+
+//incrementando o valor da variável
+    quantidadeAtual++;
+}
+
+//função para mostrar os produtos
+void exibirProdutos(const Produto produtos[], int quantidadeAtual) {
+    for (int i = 0; i < quantidadeAtual; i++) {
+        cout << "Nome: " << produtos[i].nome
+             << ", Preço: " << produtos[i].preco
+             << ", Quantidade: " << produtos[i].quantidade << endl;
+    }
+}
+
+void guardarprodutos(const Produto produtos[], int quantidadeAtual) {
+    ofstream file("database_produtos.txt", ios::app);  // Abrir o arquivo no modo de adicionar
+
+    if (!file.is_open()) {  // Verificar se o arquivo abriu corretamente
+        cout << "Erro ao abrir ficheiro tente novamente" << endl;
+        return;
+    }
+
+    for (int i = 0; i < quantidadeAtual; i++) {
+        file << i+1 << ",";
+        file << produtos[i].nome << ",";
+        file << produtos[i].preco << ",";
+        file << produtos[i].quantidade << ",";
+    }
+
+    file.close();  // Fechar o arquivo após a escrita
+    cout << "Produto salvo" << endl;
+}
+
+void alterarproduto(Produto produtos[], int& quantidadeAtual) {
+    int alterarID;
+    cout << "ID do produto que queres alterar: ";
+    cin >> alterarID;
+
+    for (int i = 0; i < quantidadeAtual; i++) {
+        if (produtos[i].ID == alterarID) {
+            cout << "Novo nome do produto: ";
+            cin >> produtos[i].nome;
+            cout << "Novo preço do produto: ";
+            cin >> produtos[i].preco;
+            cout << "Produto alterado com sucesso!" << endl;
+            return; // Sai da função após alterar o produto
+        }
+    }
+    cout << "Produto não encontrado!" << endl;
+}
+
+//função para calcular o total e devolver um valor
+float calcularValorTotal(const Produto produtos[], int quantidadeAtual) {
+    float valorTotal = 0;
+    for (int i = 0; i < quantidadeAtual; i++) {
+        valorTotal += produtos[i].preco * produtos[i].quantidade;
+    }
+    return valorTotal;
+}
+
+int main() {
+    Produto maxProdutos[100]; // maximo de protudos 
+    int quantidadeAtual = 0; // guarda a quantidade dos produtos do stock
+    int opcao;
+
+    do {    // corre sempre o code ate 0 (sair)
+        cout << "1. Adicionar Produto" << endl;
+        cout << "2. Exibir Produtos" << endl;
+        cout << "3. Calcular Valor Total do stock da loja" << endl;
+        cout << "4. Salvar Produtos em Arquivo" << endl;
+        cout << "5. Alterar Produto na base de Dados" << endl;
+        cout << "0. Sair" << endl;
+        cin >> opcao;
+
+        switch (opcao) {
+            case 1:
+                adicionarProduto(maxProdutos, quantidadeAtual);
+                break;
+            case 2:
+                exibirProdutos(maxProdutos, quantidadeAtual);
+                break;
+            case 3:
+                cout << "Valor total do stock: " << calcularValorTotal(maxProdutos, quantidadeAtual) << endl;
+                break;
+            case 4:
+                guardarprodutos(maxProdutos, quantidadeAtual);
+                break;
+            case 5:
+                alterarproduto(maxProdutos, quantidadeAtual);
+                break;
+            case 0:
+                cout << "A sair..." << endl;
+                break;
+            default:
+                cout << "Escolha outra opção." << endl; 
+        }
+    } while (opcao != 0);
+
+    return 0;
+}
+
