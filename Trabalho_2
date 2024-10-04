@@ -11,16 +11,16 @@ struct Produto {
 };
 
 void addprodutosdb(Produto produtos[], int quantidadeAtual){
-    ofstream basedatos("database.txt", ios::app); // Guardar dados na database e o 'app' é para adicionar sempre uma linha abaixo
+    ofstream database("database.txt", ios::app); // Guardar dados na database e o 'app' é para adicionar sempre uma linha abaixo
 
-    if(basedatos.is_open()){
-        basedatos << produtos[quantidadeAtual - 1].ID << "," 
+    if(database.is_open()){
+        database << produtos[quantidadeAtual - 1].ID << "," 
                   << produtos[quantidadeAtual - 1].nome << ","
                   << produtos[quantidadeAtual - 1].preco << ","
                   << produtos[quantidadeAtual - 1].quantidade << ","
                   << produtos[quantidadeAtual - 1].status << endl;
 
-        basedatos.close(); // Fechar database
+        database.close(); // Fechar database
     } else {
         cout << "Erro ao abrir a database!" << endl;
     }
@@ -62,8 +62,8 @@ void exibirProdutos(const Produto produtos[], int quantidadeAtual) {
 
 // Função para iniciar a base de dados
 void startbasedados(){
-    ifstream basedatos("database.txt", ios::app);
-    if(!basedatos){
+    ifstream database("database.txt", ios::app);
+    if(!database){
         char opcao;
         
         cout << "Database não encontrada" << endl;
@@ -73,8 +73,8 @@ void startbasedados(){
 
         if(opcao == 'y'){
             // Cria uma nova base de dados
-            ofstream basedatos("database.txt");
-            basedatos.close();
+            ofstream database("database.txt");
+            database.close();
             system("clear");
             cout << "Criado com sucesso" << endl;
             
